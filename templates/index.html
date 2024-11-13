@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | DressZeN Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Include jQuery and jQuery UI -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="logo-container">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="logo"></a>
+        </div>
+
+        <div class="website-name">
+            <img src="{{ url_for('static', filename='img/header.png') }}" alt="Website name" class="website-name-img">
+        </div>
+
+        <nav class="search-login-menu">
+            <!-- Search bar -->
+            <form action="{{ url_for('search') }}" method="GET" class="search-form">
+                <input type="text" id="search-query" name="query" placeholder="Search..." required class="search-bar">
+                <button type="submit">Search</button>
+            </form>
+            
+            <!-- Logout button -->
+            <a href="{{ url_for('signout') }}" class="login-btn">LOGOUT</a>
+        </nav>
+    </header>
+
+    <!-- Content goes here -->
+
+    <footer>
+        <p>&copy; DressZeN Finder</p>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            // Autocomplete functionality for the search input
+            $('#search-query').autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "{{ url_for('autocomplete_search') }}",
+                        data: { term: request.term },
+                        dataType: 'json',
+                        success: function(data) {
+                            response(data);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
